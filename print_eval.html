@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="en" class="wf-omnespro-n2-active wf-omnespro-n3-active wf-proximanova-n1-active wf-proximanova-n4-active wf-proximanova-n7-active wf-active">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A small translator to convert Javascript to Jelly.">
+
+    <title>Jello</title>
+
+
+    
+    
+    
+
+
+
+
+
+    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="lib/pure-min.css">
+
+
+
+
+
+    <link rel="stylesheet" href="lib/baby-blue.css">
+
+
+
+
+
+    
+
+
+</script>
+
+
+
+
+
+</head>
+<body>
+
+    <div class="pure-g-r" id="layout">
+        <a href="http://purecss.io/#menu" id="menuLink" class="pure-menu-link">
+            <span></span>
+        </a>
+
+        <div class="pure-u-1" id="menu">
+            <div class="pure-menu pure-menu-open">
+                <a class="pure-menu-heading" href="index.html">Jello</a>
+                <ul>
+
+                    <li class=" ">
+                        <a href="https://github.com/abhididdigi/Jello">Github Repository</a>
+                    </li>
+                </ul>
+                <ul>
+
+                    <li class=" ">
+                        <a href="examples.htm">Examples</a>
+                    </li>
+                </ul>
+
+
+
+
+
+        </div>
+    </div>
+    <div class="pure-u-1" id="main">
+
+
+
+
+
+        <div class="header">
+
+
+
+            <h2>Print and Evaluate functions:</h2>
+
+        </div>
+        <div class="content">
+
+
+
+            <h2 id="print" class="content-subhead"><code>print</code>(with a small `p` only) function:</h2>
+            <p> 
+                We all know that Jelly is a templating language. We mix server side constructs with HTML that gives us ability to write easy template pages. What ever you write in the print function, will be the HTML that will be converted. <code>print</code> function can take any number of arguments. For example:
+
+                The Javascript code :
+                <code>
+                    print("<b> Hello world</b>");
+                </code>
+
+                will be convered to :
+                <code>
+                    <?xml version="1.0" encoding="utf-8" ?>
+                    <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+                    <b> Hello World</b>
+                </j:jelly>
+            </code>
+
+            <br/>
+
+            If there is no quotes between the words, Jello will interpret it as a Jelly variable. For example:
+
+            <code>
+                print(a);
+            </code>
+
+            will be converted to:
+            <code>
+                <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+                <b> ${jvar_a}</b>
+            </j:jelly>
+        </code>
+        <br/>
+        Now, let's mix and match:
+        <code>
+            print("Hello world", a);
+        </code>
+        <br/>
+
+
+        will be rendered to
+        <code>
+
+            <?xml version="1.0" encoding="utf-8" ?>
+            <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+            Hello World${jvar_a}
+        </j:jelly>
+    </code>
+
+
+
+
+
+</p>
+<hr/>
+<h2 id="eval" class="content-subhead"><code>evaluate</code>(with a small `e` only) function:<a href="http://purecss.io/base/#why-jello" class="content-link"></a></h2>
+<p> Let's start by an example:
+    <ul>
+        <li>
+            Declaration of the script:
+            <br/>
+            In this step, we handle the Server side Javascript code declaration such as Glide, Javascript array declaration, etc.
+            here is an example:
+            <br/>
+            <p> Say you want your <code>g:evaluate</code> loop to have a glide to Incident table </p>
+            <p> Here is how you write it in Jello:</p>
+            <p>
+                <code>
+
+                   var   incGlideServerCode = 'var gr = new GlideRecord("incident"); gr.get("sys_id"); gr';
+                   
+
+               </code>
+               <br/>
+               <code>evaluate(incGlideServerCode, "incidentGlide", "phase1");</code>
+           </p>
+
+           <p>
+            will be converted to: <p/>
+
+            <textarea style="border:none;width: 550px; height: 250px;">
+                <?xml version="1.0" encoding="utf-8" ?>
+                <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+
+
+                <g:evaluate var="jvar_incidentGlide">var gr = new GlideRecord("incident"); gr.get("sys_id"); gr</g:evaluate>
+            </j:jelly>
+        </textarea>
+
+    </li>
+
+
+
+
+</ul>
+
+Things to note here :
+<p>
+
+    1)  The declaration ( here <code>var incGlideServerCode</code>) should always have the word ServerCode in it. That's how Jello will identify that the value of this variable is going to be a server side javascript code.
+</p>
+<p>
+    2) <code> evaluate </code> function consists of three parameters.
+    <p> <b>one</b> : The variable in which the Server side code is stored, here it is incGlideServerCode.</p>
+    <p> <b>Two:</b> The Jelly variable to which the results of Glide should be returned. Here it is <code>incidentGlide</code>. Hence it is convered to <code>jvar_incidentGlide</code> and used.</p>
+    <p> <b>Three:</b> For future reference, it also takes the phase of this evaluate.</p>
+</p>
+
+
+
+
+
+
+
+</p>
+</p>
+</li>
+</ul>
+</p>
+</div>
+<div class="legal pure-g-r">
+
+
+
+
+
+
+    <div class="pure-u-2-5">
+        <div class="l-box">
+
+
+            <p class="legal-copyright">
+                © <a href="http://twitter.com/diddigiabhi"> @abhididdigi</a> All rights reserved.
+            </p>
+        </div>
+    </div>
+</div> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="lib/1.6.3"></script>
+
+
+
+</body></html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html lang="en" class="wf-omnespro-n2-active wf-omnespro-n3-active wf-proximanova-n1-active wf-proximanova-n4-active wf-proximanova-n7-active wf-active">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A small translator to convert Javascript to Jelly.">
+
+    <title>Jello</title>
+
+
+    
+    
+    
+
+
+
+
+
+    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+     <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="lib/pure-min.css">
+
+
+
+
+
+    <link rel="stylesheet" href="lib/baby-blue.css">
+
+
+
+
+
+    
+
+
+</script>
+
+
+
+
+
+</head>
+<body>
+
+    <div class="pure-g-r" id="layout">
+        <a href="http://purecss.io/#menu" id="menuLink" class="pure-menu-link">
+            <span></span>
+        </a>
+
+        <div class="pure-u-1" id="menu">
+            <div class="pure-menu pure-menu-open">
+                <a class="pure-menu-heading" href="index.html">Jello</a>
+
+                
+                        <small><div class="pure-u-1" id="menu1">
+                         <div class="pure-menu pure-menu-open">
+                            <ul>
+                                <b>Variable declarations:</b>
+                                <div class="exampleItem" id="one">
+                                    <li  style="cursor:pointer;" class = " ">
+
+                                        Example one
+
+                                    </li>
+                                </div>
+                                <div style="cursor:pointer;"  class="exampleItem" id="two">
+                                    <li   class = " ">
+
+                                        Example Two
+
+                                    </li>
+                                </div>
+                                <div style="cursor:pointer;"  class="exampleItem" id="three">
+                                    <li  class = " ">
+
+                                        Example Three
+
+                                    </li>
+                                </div>
+                            </ul>
+                            <ul>
+                                <b>Conditional and Looping:</b>
+                                <div class="exampleItem" id="four">
+                                    <li  style="cursor:pointer;" class = " ">
+
+                                        If..Else Construct
+
+                                    </li>
+                                </div>
+                                <div style="cursor:pointer;"  class="exampleItem" id="five">
+                                    <li   class = " ">
+
+                                        While
+
+                                    </li>
+                                </div>
+                                <div style="cursor:pointer;"  class="exampleItem" id="six">
+                                    <li  class = " ">
+
+                                        For In
+
+                                    </li>
+                                </div>
+                            </ul>
+                            <ul>
+                                <b>Assignment expressions</b>
+                                <div class="exampleItem" id="seven">
+                                    <li  style="cursor:pointer;" class = " ">
+
+                                        Example one
+
+                                    </li>
+                                </div>
+                                <div style="cursor:pointer;"  class="exampleItem" id="eight">
+                                    <li   class = " ">
+
+                                       Example two
+
+                                    </li>
+                                </div>
+                                
+                            </ul>
+                            <ul>
+                                <b>Utility functions:</b>
+                                <div class="exampleItem">
+                                    <li  style="cursor:pointer;" class = " ">
+
+                                        <a href="print_eval.html">Print and Evaluate</a>
+
+                                    </li>
+                                </div>
+                                
+                                
+                            </ul>
+                            <ul>
+                                <b>Complete Examples.</b>
+                                <div class="exampleItem" id="nine">
+                                    <li  style="cursor:pointer;" class = " ">
+
+                                        Example one
+
+                                    </li>
+                                </div>
+                                <div style="cursor:pointer;"  class="exampleItem" id="ten">
+                                    <li   class = " ">
+
+                                       Example two
+
+                                    </li>
+                                </div>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </small>
+
+            
+    </div>
+</div>
+
+
+
+
+
+<div class="pure-u-1" id="main">
+
+
+
+
+
+    <div class="header">
+        <h1>Examples</h1>
+
+
+        <h2>Editor & couple of examples to get you started.</h2>
+
+    </div>
+    <div class="content">
+        <div class="pure-g">
+
+            <div class="pure-u-1-2"> 
+                <h2 id="js" class="content-subhead">Javascript</h2>
+
+                <div id="editor" style="width:430px;height:400px;border-style:solid;
+                border-color:#ccc;">
+                <xml/>
+            </div>
+            <div id="checkbox">
+                <input type="checkbox" id="simul"><small>  Enable Simultaneous Conversion<br>[You can use the hotkey CTRL+M to convert Javascript to Apache Jelly.]</small>
+            </div>
+
+
+        </div>
+        <div class="pure-u-1-2"> 
+            <h2 id="jelly" class="content-subhead" style="margin-left: 130px;">Apache Jelly</h2> 
+            <div id="editor1" style="width:500px;height:400px;border-style:solid;
+            border-color:#ccc;">
+            <xml/>
+        </div>
+
+    </div>
+
+</div>
+</div>
+
+</div>
+
+<script type="text/javascript" src="lib/esprima.js"></script>
+
+<script type="text/javascript" src="lib/underscore-min.js"></script>
+<script type="text/javascript" src="lib/handlebars.js"></script>
+<script type="text/javascript" src="lib/jquery-2.0.3.min.js"></script>
+
+
+<script type="text/javascript" src="src/astparser2.js"></script>
+<script src="lib/1.6.3"></script>
+
+<script type="text/javascript">
+    var finalJelly = AstParser.parse(esprima.parse("if(x==1){if(y ==1){  print('1');}}"));
+    $('#editor').text("if(x==1){if(y ==1){  print('1');}}");
+
+    $('#editor1').text(finalJelly);
+
+</script>
+<script type="text/javascript" src="lib/ace.js"></script>
+<script>
+    var editor = ace.edit("editor");
+
+    document.getElementById('editor').style.fontSize='15px';
+    editor.getSession().setUseWrapMode(true);
+    var editor1 = ace.edit("editor1");
+    editor1.getSession().setMode("ace/mode/xml");
+    document.getElementById('editor1').style.fontSize='15px';
+    editor1.getSession().setUseWrapMode(true);
+
+    editor.getSession().on('change', function(e) {
+
+        if(!($('#simul').is(":checked"))){return;}
+        _.delay(setEditor,300);
+        function setEditor(){
+            var finalJelly = AstParser.parse(esprima.parse(editor.getValue()));
+            editor1.setValue(finalJelly);
+        }
+
+
+    });
+    editor.commands.addCommand({
+        name: 'translate',
+        bindKey: {win: 'Ctrl-M',  mac: 'Command-M'},
+        exec: function(editor) {
+            var finalJelly = AstParser.parse(esprima.parse(editor.getValue()));
+            editor1.setValue(finalJelly);
+        },
+
+    });
+
+
+</script>
+<div id = "wrapper" style="display:none;">
+<div id="exampleone">
+var i=0;
+</div>
+
+<div id="exampletwo">
+var i= i+1;
+</div>
+<div id="examplethree">
+var jvar_i = 0;
+</div>
+<div id="examplefour">
+var a = 0;
+if(x == 1){
+    print(a);
+}
+if(true){
+    print("Hello World!", a);
+}
+</div>
+<div id="examplefive">
+var a =0;
+while(a < 3){
+    print(a);
+    a++;
+}
+</div>
+<div id="examplesix">
+evalServerCode = "var arr = ['one','two']"
+evaluate(evalServerCode,'arr','phase1');
+for(item in arr){
+    print(item);
+}
+</div>
+<div id="exampleseven">
+i++;
+</div>
+<div id="exampleeight">
+i = i+2;
+</div>
+<div id="examplenine">
+var a = 0;
+while(a <10){
+    var bool = "true";
+    if(a == 3){
+    print("yay! My name is ", a);
+    }
+    if(bool){
+    print("True")
+    }
+    else if(!bool){
+    print("false");
+    }
+}
+</div>
+
+<div id="exampleten">
+evalServerCode = "var arr = ['one','two']"
+evaluate(evalServerCode,'arr','phase1');
+for(item in arr){
+    if(item == 'one'){
+    print("I am one");
+    }
+    print(item);
+}
+</div>
+
+
+</div>
+
+
+<script type="text/javascript">
+$('.exampleItem').click(function(elem){
+        var id = $(this).attr('id');
+        prep = '#example'+id;
+        $('#simul').prop('checked',true);
+        editor.setValue($(prep).text());
+
+
+
+});
+
+</script>
+ 
+
+    
+
+</body></html>
