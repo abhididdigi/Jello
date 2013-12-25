@@ -9,7 +9,7 @@ var AstParser = {
    
    parse : function(ast){
       var finalJellyString = '<?xml version="1.0" encoding="utf-8" ?>\n<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">';
-      var Syntax,VisitorKeys,VisitorValues;
+      var Syntax,VisitorValues;
       var ifConsequent = '';
       var whileConsequent = '';
       function throwError(msg){
@@ -18,17 +18,67 @@ var AstParser = {
       
       codeBlocks = {};
       Syntax = {
-         VariableDeclaration:'VariableDeclaration',
-         Program: 'Program',
-         VariableDeclarator: 'VariableDeclarator'
+        AssignmentExpression: 'AssignmentExpression',
+        ArrayExpression: 'ArrayExpression',
+        ArrayPattern: 'ArrayPattern',
+        ArrowFunctionExpression: 'ArrowFunctionExpression',
+        BlockStatement: 'BlockStatement',
+        BinaryExpression: 'BinaryExpression',
+        BreakStatement: 'BreakStatement',
+        CallExpression: 'CallExpression',
+        CatchClause: 'CatchClause',
+        ComprehensionBlock: 'ComprehensionBlock',
+        ComprehensionExpression: 'ComprehensionExpression',
+        ConditionalExpression: 'ConditionalExpression',
+        ContinueStatement: 'ContinueStatement',
+        DirectiveStatement: 'DirectiveStatement',
+        DoWhileStatement: 'DoWhileStatement',
+        DebuggerStatement: 'DebuggerStatement',
+        EmptyStatement: 'EmptyStatement',
+        ExpressionStatement: 'ExpressionStatement',
+        ForStatement: 'ForStatement',
+        ForInStatement: 'ForInStatement',
+        FunctionDeclaration: 'FunctionDeclaration',
+        FunctionExpression: 'FunctionExpression',
+        Identifier: 'Identifier',
+        IfStatement: 'IfStatement',
+        Literal: 'Literal',
+        LabeledStatement: 'LabeledStatement',
+        LogicalExpression: 'LogicalExpression',
+        MemberExpression: 'MemberExpression',
+        NewExpression: 'NewExpression',
+        ObjectExpression: 'ObjectExpression',
+        ObjectPattern: 'ObjectPattern',
+        Program: 'Program',
+        Property: 'Property',
+        ReturnStatement: 'ReturnStatement',
+        SequenceExpression: 'SequenceExpression',
+        SwitchStatement: 'SwitchStatement',
+        SwitchCase: 'SwitchCase',
+        ThisExpression: 'ThisExpression',
+        ThrowStatement: 'ThrowStatement',
+        TryStatement: 'TryStatement',
+        UnaryExpression: 'UnaryExpression',
+        UpdateExpression: 'UpdateExpression',
+        VariableDeclaration: 'VariableDeclaration',
+        VariableDeclarator: 'VariableDeclarator',
+        WhileStatement: 'WhileStatement',
+        WithStatement: 'WithStatement',
+        YieldExpression: 'YieldExpression'
+
       };
-      VisitorKeys = {
-         VariableDeclaration: ['declarations'],
-         Program: ['body'],
-         VariableDeclarator: ['id', 'init'],
-         IfStatement:['test','consequent']
-         
+
+      Lookahead = {//Capturing only complex values.
+         VariableDeclaration: 'declarations',
+         IfStatement: 'consequent',
+         WhileStatement: 'body',
+         BlockStatement: 'body',
+         ExpressionStatement: 'expression',
+         FunctionDeclaration: 'body',
+         ForStatement: 'body'
       };
+
+
       VisitorValues= {
          VariableDeclarator : '<j:set var ="<%= name %>" value="<%= value %>"/>',
          IfStatement: '\n<j:if test="${<%= test %>}"><%= consequent%></j:if>',
@@ -44,9 +94,65 @@ var AstParser = {
          //the lookAtAst will be just a wrapper, Everything won't happen here.
          //Handling the primitives,Get the body and pass it to respective functions again and again.
          var body = ast.body;
-         return _.map(body,processNodes).join('\n')
+         //deep traversal of AST for Phase two, check for block statements
+         deepTraverse(body,false);
+         console.log("After Deep travserse",body);
+
+         return _.map(body,processNodes).join('\n');
          
       }
+      function deepTraverse(node,phaseBool){
+         //console.log(phaseBool,"When the function enteres.")
+         var phaseTwo = false;
+         if(_.isArray(node)){//iterate 'em all
+            for(i in node){
+               deepTraverse(node[i],phaseBool);
+            }
+         }
+         else if(node.type in Lookahead){
+            //one of the compund values. Check if there is a block statement present.
+            //If there is a block statement and has phase two, append true to each node we traverse.
+            //Search for a `labeled statement` and if its phase two, note it down.
+            
+            //console.log(node.type,"in the lookahead");
+            if(phaseBool){
+               node.phase = 'two';
+            }
+            if(node.type == 'BlockStatement'){
+               
+               _.each(node[Lookahead['BlockStatement']], function(elem){
+                  console.log("inside block statement statement" ,elem);
+                  if(elem.type === 'LabeledStatement'){
+                     console.log("Inside Labelled Statement"+elem.label.name+elem.body.expression.name)
+                     if(elem.label.name === 'phase' && elem.body.expression.name == 'two'){
+                        
+                        phaseTwo = true;
+                     }
+                  }
+               });
+            }
+            var nextKey = Lookahead[node.type];
+            //console.log("next key",nextKey);
+            var nextNode = node[nextKey];
+            //console.log("next Node",nextNode);
+            //console.log("Phase Two value",phaseTwo);
+            //console.log("phaseBool Value",phaseBool);
+
+            if(phaseTwo || phaseBool){
+               deepTraverse(nextNode,true);
+            }
+            else{
+            deepTraverse(nextNode,false);
+            }
+         }
+         else{
+            if(phaseBool){
+               node.phase = 'two';
+            }
+            return;
+         }
+      }
+
       function template(o,statement){
          var compile = _.template(VisitorValues[statement]);
          
