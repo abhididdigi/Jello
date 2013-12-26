@@ -12,7 +12,7 @@ People who are new to Service Now can start using Jello for creating UI Pages/UI
 
 ### How?
 
-It uses Esprima for parsing Javascript which outputs a AST.
+It uses Esprima for parsing Javascript which outputs an AST.
 
 
 You can find the demo at : http://servicenowdiary.com/Jello-master/examples.htm
