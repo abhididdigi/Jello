@@ -1,0 +1,49 @@
+
+/* Start of Column CSS */
+#container2 {
+	clear:left;
+	float:left;
+	width:100%;
+	overflow:hidden;
+	
+}
+#container1 {
+	float:left;
+	width:100%;
+	position:relative;
+	right:50%;
+	
+}
+#col1 {
+	float:left;
+	width:46%;
+	position:relative;
+	left:52%;
+	overflow:hidden;
+	
+	border:2px solid #0094ff;
+	-webkit-border-top-left-radius:6px;
+	-webkit-border-top-right-radius:6px;
+	-moz-border-radius-topleft:6px;
+	-moz-border-radius-topright:6px;
+	border-top-left-radius:6px;
+	border-top-right-radius:6px;
+}
+#col2 {
+	float:left;
+	width:46%;
+	position:relative;
+	left:56%;
+	overflow:hidden;
+	
+	border:2px solid #0094ff;
+	-webkit-border-top-left-radius:6px;
+	-webkit-border-top-right-radius:6px;
+	-moz-border-radius-topleft:6px;
+	-moz-border-radius-topright:6px;
+	border-top-left-radius:6px;
+	border-top-right-radius:6px;
+}
+div h2 {background:#0094ff;color:white;padding:10px;margin:0px;}
+
+/* --> */

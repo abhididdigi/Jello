@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Jello editor</title>
+<script src="editor/lib/codemirror.js"></script>
+<link rel="stylesheet" href="editor/lib/codemirror.css">
+<link rel="stylesheet" href="editor/lib/custom.css">
+<script src="editor/mode/javascript.js"></script>
+<script type="text/javascript" src="editor/lib/keyboard.js"></script>
+
+
+
+
+</head>
+<body>
+<div id="container2">
+	<div id="container1">
+		<div id="col1">
+			<h2>Javascript</h2>
+			<textarea id="js" rows="4" cols="10"></textarea>
+		</div>
+		<div id="col2">
+			<h2> Apache Jelly </h2>
+			<textarea id="xml" rows="4" cols="10"></textarea>
+		</div>
+	</div>
+</div>
+
+Note: Press `CTRL + M` to convert Javascript to Apache Jelly.
+<script>
+var opt = {mode:'xml',lineNumbers:true}
+var jsText = document.getElementById('js');
+    var CMJS = CodeMirror.fromTextArea(jsText,opt);
+    CMJS.setSize(600, 600);
+    var XMLJS = CodeMirror.fromTextArea(document.getElementById("xml"),opt)
+    XMLJS.setSize(600,600);
+KeyboardJS.on('ctrl > m', function() {
+    XMLJS.setValue()
+});
+</script>
+</body>
+</html>

@@ -88,6 +88,15 @@ var AstParser = {
          ForInStatement:'\n<j:forEach items="${<%= collection %>}" var="<%= placeholder %>"><%= block %> </j:forEach> ',
          EvalStatement: '\n<g:evaluate var="<%= variable %>"><%= evalCode %></g:evaluate>'
       };
+      VisitorValuesTwo= {
+         VariableDeclarator : '<j2:set var ="<%= name %>" value="<%= value %>"/>',
+         IfStatement: '\n<j2:if test="$[<%= test %>]"><%= consequent%></j2:if>',
+         WhileStatement:'\n<j2:while test="$[<%= test %>]"><%= consequent%></j2:while>',
+         SetStatement:'\n<j2:set var="<%= name %>" value="<%=value%>"/>',
+         SetStamanetWithBraces :'\n<j2:set var="<%= name %>" value="[<%=value%>]"/>',
+         ForInStatement:'\n<j2:forEach items="$[<%= collection %>]" var="<%= placeholder %>"><%= block %> </j2:forEach> ',
+         EvalStatement: '\n<g2:evaluate var="<%= variable %>"><%= evalCode %></g2:evaluate>'
+      };
       
       function lookAtAst(AST){
          var ast = AST; // the AST tree.
@@ -96,13 +105,13 @@ var AstParser = {
          var body = ast.body;
          //deep traversal of AST for Phase two, check for block statements
          deepTraverse(body,false);
-         console.log("After Deep travserse",body);
+         
 
          return _.map(body,processNodes).join('\n');
          
       }
       function deepTraverse(node,phaseBool){
-         //console.log(phaseBool,"When the function enteres.")
+         
          var phaseTwo = false;
          if(_.isArray(node)){//iterate 'em all
             for(i in node){
@@ -114,16 +123,16 @@ var AstParser = {
             //If there is a block statement and has phase two, append true to each node we traverse.
             //Search for a `labeled statement` and if its phase two, note it down.
             
-            //console.log(node.type,"in the lookahead");
+            
             if(phaseBool){
                node.phase = 'two';
             }
             if(node.type == 'BlockStatement'){
                
                _.each(node[Lookahead['BlockStatement']], function(elem){
-                  console.log("inside block statement statement" ,elem);
+                  
                   if(elem.type === 'LabeledStatement'){
-                     console.log("Inside Labelled Statement"+elem.label.name+elem.body.expression.name)
+                     
                      if(elem.label.name === 'phase' && elem.body.expression.name == 'two'){
                         
                         phaseTwo = true;
@@ -132,11 +141,11 @@ var AstParser = {
                });
             }
             var nextKey = Lookahead[node.type];
-            //console.log("next key",nextKey);
+            
             var nextNode = node[nextKey];
-            //console.log("next Node",nextNode);
-            //console.log("Phase Two value",phaseTwo);
-            //console.log("phaseBool Value",phaseBool);
+           
+            
+            
 
             if(phaseTwo || phaseBool){
                deepTraverse(nextNode,true);
@@ -153,9 +162,13 @@ var AstParser = {
          }
       }
 
-      function template(o,statement){
-         var compile = _.template(VisitorValues[statement]);
-         
+      function template(o,statement,phase){
+         var compile;
+         if(!phase)
+            compile = _.template(VisitorValues[statement]);
+         else
+            compile = _.template(VisitorValuesTwo[statement]); 
+
          
          return compile(o);
       }
@@ -170,10 +183,15 @@ var AstParser = {
          else return ' '+operator+' ';
          }
       
-      function processNodes(row){
+      function processNodes(row,phase){
+         var _phase = false;
+         if(!_.isUndefined(row.phase) && row.phase == 'two'){
+            _phase = true;
+         }
          //Gets a row.Real processing happens here.
          //return the jelly interpretation of that particular row ONLY.
          //This will be recursive function too.
+         
          if(row.type == 'Literal'){
             return row.value;
          }
@@ -185,6 +203,7 @@ var AstParser = {
             }
             else iden =  row.name;
                if(row.nobrace) return iden;
+               else if (_phase_) return '$['+iden+']'
                else return '${'+iden+'}'
             }
          
@@ -200,8 +219,8 @@ var AstParser = {
                }
             
             row.left.nobrace = true;
-            o.name = processNodes(row.left);
-            o.value = processNodes(row.right);
+            o.name = processNodes(row.left,_phase);
+            o.value = processNodes(row.right,_phase);
             var val = o.value+'';
             
             if(val.indexOf('jvar_') > -1){
@@ -234,12 +253,12 @@ var AstParser = {
         		}
         	});
         	
-        	return template(o,'EvalStatement');
+        	return template(o,'EvalStatement',_phase);
 
         }
          }
          if(row.type == 'ExpressionStatement'){
-            return processNodes(row.expression);
+            return processNodes(row.expression,_phase);
          }
          
          if(row.type == 'BlockStatement'){
@@ -258,7 +277,7 @@ var AstParser = {
          if(row.type == 'BinaryExpression'|| row.type == 'LogicalExpression'){
             row.left.nobrace = 'true';
             row.right.nobrace = 'true';
-            return processNodes(row.left) + processOperator(row.operator) + processNodes(row.right);
+            return processNodes(row.left,_phase) + processOperator(row.operator) + processNodes(row.right,_phase);
          }
          
          
@@ -285,11 +304,16 @@ var AstParser = {
          if(row.type == 'UpdateExpression'){
          	var o = {};
          	row.argument.nobrace = true;
-         	var paddedName = processNodes(row.argument);
-         	o.name = '{'+ paddedName+'}';
+         	var paddedName = processNodes(row.argument,_phase);
+         	o.name =  paddedName;
          	//value 1 ++ isn't allowed. Hence always we have a variable here. Hence padding ${}
-         	o.value =  '${'+paddedName +'+1}';
-         	return template(o,'VariableDeclarator');
+         	if(_phase){
+            o.value =  '$['+paddedName +'+1]';  
+          }
+          else{
+            o.value =  '${'+paddedName +'+1}';
+          }
+         	return template(o,'VariableDeclarator',_phase);
 
 
          }
@@ -309,15 +333,15 @@ var AstParser = {
                
                if(row.id.type == 'Identifier'){
                   row.id.nobrace = true;
-                  o.name = processNodes(row.id);
+                  o.name = processNodes(row.id,_phase);
                }
             }
             
             if(!(_.isNull(row.init) || _.isUndefined(row.init))){
                if(row.init.type == 'Literal')
-                  o.value = processNodes(row.init)
+                  o.value = processNodes(row.init,_phase)
                else if(row.init.type == 'BinaryExpression')
-                  o.value = processNodes(row.init);
+                  o.value = processNodes(row.init,_phase);
                
             }
             
@@ -331,7 +355,7 @@ var AstParser = {
             }
             
             
-            return template(o,'VariableDeclarator');
+            return template(o,'VariableDeclarator',_phase);
             
             
          }
@@ -357,7 +381,7 @@ var AstParser = {
                else {o.test = processNodes(row.test);}
                o.consequent = processNodes(row.consequent);
             if(_.isNull(row.alternate)){  return template(o,'IfStatement') ;  }
-               else  { return template(o,'IfStatement')+processNodes(row.alternate); }
+               else  { return template(o,'IfStatement',_phase)+ processNodes(row.alternate,_phase); }
                
             
             
@@ -375,7 +399,7 @@ var AstParser = {
             if(row.test.type == 'Identifier'){ row.test.nobrace = true; o.test = processNodes(row.test);}
                else {o.test = processNodes(row.test);}
                o.consequent = processNodes(row.body);
-            return template(o,'WhileStatement') ;
+            return template(o,'WhileStatement',_phase) ;
          }
 
          //For loop
@@ -387,7 +411,7 @@ var AstParser = {
          	o.collection = processNodes(row.right);
          	o.placeholder = processNodes(row.left);
          	o.block = processNodes(row.body);
-         	return template(o,'ForInStatement');
+         	return template(o,'ForInStatement',_phase);
 
          }
 
