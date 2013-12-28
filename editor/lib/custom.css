@@ -1,5 +1,9 @@
 
 /* Start of Column CSS */
+body{
+	font-family: 'Open Sans', sans-serif;
+}
+
 #container2 {
 	clear:left;
 	float:left;
@@ -46,4 +50,10 @@
 }
 div h2 {background:#0094ff;color:white;padding:10px;margin:0px;}
 
-/* --> */
+#footer,#warning{
+	margin: 25px;
+
+}
+#warning{
+	background: #e6e6e6;
+}

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Jello editor</title>
+<title>Jello editor</title>
 <script src="editor/lib/codemirror.js"></script>
 <link rel="stylesheet" href="editor/lib/codemirror.css">
 <link rel="stylesheet" href="editor/lib/custom.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <script src="editor/mode/javascript.js"></script>
 <script type="text/javascript" src="editor/lib/keyboard.js"></script>
 <script type="text/javascript" src="lib/esprima.js"></script>
@@ -31,10 +32,17 @@
 			<h2> Apache Jelly </h2>
 			<textarea id="xml" rows="4" cols="10"></textarea>
 		</div>
+
+	</div>
+	<div id="footer">
+	Note: Press `CTRL + M` to convert Javascript to Apache Jelly.
+	</div>
+	<div id ="warning">
+
 	</div>
 </div>
 
-Note: Press `CTRL + M` to convert Javascript to Apache Jelly.
+
 <script>
 var opt = {mode:'xml',lineNumbers:true}
 var jsText = document.getElementById('js');
@@ -43,9 +51,14 @@ var jsText = document.getElementById('js');
     var CMXML = CodeMirror.fromTextArea(document.getElementById("xml"),opt)
     CMXML.setSize(600,600);
 KeyboardJS.on('ctrl > m', function() {
+    $('#warning').html('');
+    try{
     
     CMXML.doc.setValue(AstParser.parse(esprima.parse(CMJS.getValue())));
- 
+ 	}
+ 	catch(e){
+ 		$('#warning').html(e);
+ 	}
 });
 </script>
 </body>
