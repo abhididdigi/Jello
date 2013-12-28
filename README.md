@@ -32,7 +32,7 @@ It uses Esprima for parsing Javascript which outputs an AST.
 5. Add test cases using Travis-Ci and/or other tools.
 
 
-You can find the demo at : jello-editor.herokuapp.com/examples.htm
+You can find the demo at : http://jello-editor.herokuapp.com/examples.htm
 
 You can find the distraction free editor at : http://jello-editor.herokuapp.com/
 
