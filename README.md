@@ -16,5 +16,6 @@ It uses Esprima for parsing Javascript which outputs an AST.
 
 
 You can find the demo at : http://servicenowdiary.com/Jello-master/examples.htm
+You can find the distraction free editor at : http://jello-editor.herokuapp.com/
 
 Note: Not ready for demployment to production.
