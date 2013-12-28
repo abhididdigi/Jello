@@ -25,7 +25,7 @@ It uses Esprima for parsing Javascript which outputs an AST.
 
 ### To-do
 --------------
-1. Add support for Control Strucutres `For` and `Switch`.
+1. Add support for Control Strucutres like `Switch`.
 2. Editor in Service Now instance(now hosted on Heroku, and available as a .zip)
 3. Add feature to include UI Macros too by using `g:call`.
 4. Add feature to write Processing Scripts and other scripts for UI pages/macros.
