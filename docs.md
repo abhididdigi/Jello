@@ -89,7 +89,7 @@ Note: you can also use `jvar_i` directly in Javascript declarations, if you are 
     
   
   
- #####  FOR-IN statement
+ ##### FOR-IN statement
  
  
  		
@@ -194,6 +194,7 @@ for example :
 ... similarly by just initializing a property `phase:two` and place it in a block statement, you can convert Phase one to two.
 
 This documentation needs a lot of examples, I would be glad if someone is ready to contribute. 
+
 If you like what I'm doing, and if you work with Service Now, and if you can donate a ** Service Now instance ** ( like the instance all Service Now employees have) so that I can work more without relying on demos, I would be most grateful.
 
  	
