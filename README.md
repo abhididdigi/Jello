@@ -36,7 +36,7 @@ You can find the demo at : http://servicenowdiary.com/Jello-master/examples.htm
 
 You can find the distraction free editor at : http://jello-editor.herokuapp.com/
 
-Docs can be found at : 
+Docs can be found at : https://github.com/abhididdigi/Jello/blob/master/docs.md
 
 
 
