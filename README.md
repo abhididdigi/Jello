@@ -26,7 +26,7 @@ It uses Esprima for parsing Javascript which outputs an AST.
 ### To-do
 --------------
 1. Add support for Control Strucutres `For` and `Switch`.
-2. Editor in Service Now instance. 
+2. Editor in Service Now instance(now hosted on Heroku, and available as a .zip)
 3. Add feature to include UI Macros too by using `g:call`.
 4. Add feature to write Processing Scripts and other scripts for UI pages/macros.
 5. Add test cases using Travis-Ci and/or other tools.
@@ -35,6 +35,8 @@ It uses Esprima for parsing Javascript which outputs an AST.
 You can find the demo at : http://servicenowdiary.com/Jello-master/examples.htm
 
 You can find the distraction free editor at : http://jello-editor.herokuapp.com/
+
+Docs can be found at : 
 
 
 
